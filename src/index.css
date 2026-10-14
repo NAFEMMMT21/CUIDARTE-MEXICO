@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-x pan-y;
+    scroll-behavior: smooth;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    max-width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    touch-action: pan-x pan-y;
+  }
+
+  #root {
+    max-width: 100%;
+    overflow-x: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  /* Prevent automatic zoom jump on iOS / Android when focusing any form input */
+  input, select, textarea, button {
+    max-width: 100%;
+  }
+
+  /* Prevent double-tap zoom and gestures on all interactive controls */
+  button, a, input, select, textarea, [role="button"], label {
+    touch-action: manipulation;
+  }
+
+  @media screen and (max-width: 768px) {
+    input,
+    select,
+    textarea,
+    input:focus,
+    select:focus,
+    textarea:focus {
+      font-size: 16px !important;
+    }
+  }
+}
+
+/* Custom Ergonomic Scrollbar Styling across Chrome, Safari, Edge and Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Safe area insets for mobile devices with notches / home indicators */
+.safe-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+.safe-top {
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+}
+
+/* Smooth fade in animations without breaking position: fixed viewport anchoring */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.15s ease-out forwards;
+}
+
+/* ==========================================================================
+   MODAL OVERLAYS & FLOATING WINDOWS (ERGONOMÍA Y ENMARCADO ENTRE HEADER Y FOOTER)
+   Garantiza que todas las ventanas flotantes, diálogos y modales aparezcan
+   con proporciones elegantes y ergonómicas, enmarcadas dentro del área visible
+   entre el encabezado superior (header) y la barra inferior de navegación (footer),
+   evitando desbordes, estiramientos excesivos o cortes de botones.
+   ========================================================================== */
+body.modal-open {
+  overflow: hidden !important;
+}
+
+/* Regla universal para todas las ventanas flotantes, diálogos y modales */
+.modal-overlay,
+[role="dialog"],
+.fixed.inset-0.z-50:not(.justify-end),
+.fixed.inset-0.z-60:not(.justify-end),
+.fixed.inset-0.z-\[9999\]:not(.justify-end),
+.fixed.inset-0.z-\[99999\]:not(.justify-end),
+div[class*="fixed"][class*="inset-0"][class*="z-50"]:not(.justify-end),
+div[class*="fixed"][class*="inset-0"][class*="z-60"]:not(.justify-end) {
+  z-index: 100000 !important; /* Siempre sobrepuesto por encima de capas base */
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important; /* Permite inicio natural de scroll sin comerse cabeceras */
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  /* Espaciado que cubre 100% la pantalla respetando safe-areas y dejando margen inferior amplio para botones */
+  padding-top: max(1.5rem, env(safe-area-inset-top, 0px)) !important;
+  padding-bottom: max(7.5rem, calc(5.5rem + env(safe-area-inset-bottom, 0px))) !important;
+  padding-left: max(0.75rem, env(safe-area-inset-left, 0px)) !important;
+  padding-right: max(0.75rem, env(safe-area-inset-right, 0px)) !important;
+}
+
+/* Modales anidados y alertas críticas de confirmación */
+.fixed.inset-0.z-60:not(.justify-end),
+div[class*="fixed"][class*="inset-0"][class*="z-60"]:not(.justify-end),
+div[class*="fixed"][class*="inset-0"][class*="z-\[110\]"],
+div[class*="fixed"][class*="inset-0"][class*="z-\[120\]"] {
+  z-index: 100050 !important;
+}
+
+/* Menús laterales / Drawers móviles (slide-overs con justify-end) */
+.fixed.inset-0.z-50.justify-end,
+div[class*="fixed"][class*="inset-0"][class*="justify-end"] {
+  z-index: 100050 !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  overflow: hidden !important;
+  overscroll-behavior: contain !important;
+}
+
+/* Fondo y estructura para panel lateral del drawer móvil:
+   Ocupa 100% de la altura de pantalla y permite scroll limpio de arriba a abajo */
+.fixed.inset-0.z-50.justify-end > div,
+div[class*="fixed"][class*="inset-0"][class*="justify-end"] > div {
+  height: 100% !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  background-color: rgb(15 23 42) !important; /* bg-slate-900 */
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-bottom: max(6rem, calc(4.5rem + env(safe-area-inset-bottom, 0px))) !important;
+  box-sizing: border-box !important;
+}
+
+/* Tarjetas y cajas de diálogo flotantes dentro de los modales:
+   El fondo cubre TODO el contenido, permite scroll limpio y asegura que los botones siempre se vean */
+.modal-overlay > div:not([class*="fixed"]),
+[role="dialog"] > div:not([class*="fixed"]),
+.fixed.inset-0.z-50:not(.justify-end) > div:not([class*="fixed"]),
+.fixed.inset-0.z-60:not(.justify-end) > div:not([class*="fixed"]),
+.fixed.inset-0.z-\[9999\]:not(.justify-end) > div:not([class*="fixed"]),
+.fixed.inset-0.z-\[99999\]:not(.justify-end) > div:not([class*="fixed"]) {
+  margin-top: 0.5rem !important;
+  margin-bottom: 2.5rem !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+}
+
+
+/* ==========================================================================
+   ROBUST PRINT STYLES FOR MOBILE AND DESKTOP BROWSERS
+   Ensures that downloadable and printable formats (Carátulas, Kárdex,
+   Tickets, Inventory, Credentials, Expedientes) render crisp and perfectly
+   formatted without modal backgrounds, headers, or cut-offs.
+   ========================================================================== */
+@media print {
+  /* Hide all unnecessary chrome, navigation, headers, footers, and modal overlays */
+  header,
+  footer,
+  nav,
+  .no-print,
+  .print\:hidden,
+  [role="navigation"],
+  [aria-label="Menú del Portal de Cliente"],
+  [aria-label="Abrir menú"],
+  button:not(.printable-document button),
+  .fixed.bottom-0,
+  .backdrop-blur-md,
+  .backdrop-blur-xs,
+  .backdrop-blur-sm {
+    display: none !important;
+  }
+
+  /* Reset body and root containers for full-width high contrast document printing */
+  html,
+  body,
+  #root,
+  main {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Modal wrapper reset when printing from inside a document preview modal */
+  .fixed.inset-0 {
+    position: static !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+    z-index: auto !important;
+  }
+
+  /* Target all official printable documents */
+  .printable-document,
+  #caratula-official-document,
+  #kardex-official-document,
+  #ticket-official-document,
+  #inventory-official-document,
+  #shopping-list-official-document,
+  #vitals-monthly-pdf-document,
+  #staff-credential-card-print {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 8mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    overflow: visible !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Standard page layout */
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  table {
+    page-break-inside: auto;
+  }
+  tr, .avoid-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
+

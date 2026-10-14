@@ -1,0 +1,139 @@
+{
+  "entities": {
+    "caratula": {
+      "title": "Caratula",
+      "description": "Carátulas de servicio contratado",
+      "type": "object",
+      "properties": {
+        "folio": { "type": "string", "maxLength": 64 },
+        "id": { "type": "string", "maxLength": 64 },
+        "nombreCompletoCliente": { "type": "string", "maxLength": 256 },
+        "total": { "type": "number" },
+        "pagado": { "type": "number" },
+        "pendiente": { "type": "number" }
+      },
+      "required": ["folio"]
+    },
+    "client": {
+      "title": "Client",
+      "description": "Directorio de clientes registrados",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "nombreCompletoCliente": { "type": "string", "maxLength": 256 }
+      },
+      "required": ["id"]
+    },
+    "service": {
+      "title": "Service",
+      "description": "Catálogo de servicios y tarifas",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "nombreServicio": { "type": "string", "maxLength": 256 },
+        "precio": { "type": "number" },
+        "costo": { "type": "number" }
+      },
+      "required": ["id"]
+    },
+    "expense": {
+      "title": "Expense",
+      "description": "Registro de gastos y pagos de costos por servicio",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "caratulaFolio": { "type": "string", "maxLength": 64 },
+        "concepto": { "type": "string", "maxLength": 256 },
+        "monto": { "type": "number" },
+        "categoria": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "caratulaFolio", "monto"]
+    },
+    "abono": {
+      "title": "AbonoTicket",
+      "description": "Comprobantes y tickets de abonos de clientes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "caratulaFolio": { "type": "string", "maxLength": 64 },
+        "clienteNombre": { "type": "string", "maxLength": 256 },
+        "montoAbonado": { "type": "number" },
+        "metodoPago": { "type": "string", "maxLength": 64 },
+        "fecha": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "caratulaFolio", "montoAbonado"]
+    },
+    "expedienteEntry": {
+      "title": "ExpedienteEntry",
+      "description": "Notas y registros clínicos del paciente",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "caratulaFolio": { "type": "string", "maxLength": 64 },
+        "clienteId": { "type": "string", "maxLength": 64 },
+        "autor": { "type": "string", "maxLength": 256 },
+        "fecha": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id"]
+    },
+    "kardexRecord": {
+      "title": "KardexRecord",
+      "description": "Registro de medicamentos y kárdex clínico",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "caratulaFolio": { "type": "string", "maxLength": 64 },
+        "clienteId": { "type": "string", "maxLength": 64 },
+        "medicamento": { "type": "string", "maxLength": 256 }
+      },
+      "required": ["id"]
+    },
+    "auditLog": {
+      "title": "AuditLog",
+      "description": "Bitácora de seguridad y auditoría de eventos del sistema",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "tipoAccion": { "type": "string", "maxLength": 64 },
+        "usuarioUx": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "tipoAccion", "usuarioUx"]
+    }
+  },
+  "firestore": {
+    "/caratulas/{caratulaId}": {
+      "schema": "caratula",
+      "description": "Colección de carátulas de servicio"
+    },
+    "/clients/{clientId}": {
+      "schema": "client",
+      "description": "Colección de clientes"
+    },
+    "/services/{serviceId}": {
+      "schema": "service",
+      "description": "Catálogo de servicios"
+    },
+    "/expenses/{expenseId}": {
+      "schema": "expense",
+      "description": "Colección de gastos"
+    },
+    "/abonos/{abonoId}": {
+      "schema": "abono",
+      "description": "Colección de abonos"
+    },
+    "/expediente_entries/{entryId}": {
+      "schema": "expedienteEntry",
+      "description": "Colección de notas clínicas y expediente"
+    },
+    "/kardex_records/{recordId}": {
+      "schema": "kardexRecord",
+      "description": "Colección de kárdex de medicamentos"
+    },
+    "/audit_logs/{logId}": {
+      "schema": "auditLog",
+      "description": "Colección de auditoría del sistema"
+    }
+  }
+}

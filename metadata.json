@@ -1,0 +1,6 @@
+{
+  "name": "Cuidarte México - SICCUM",
+  "description": "SICCUM - Soluciones de asistencia y gestión para el bienestar familiar: generación de carátulas en formato oficial CPSEA, directorio de clientes, catálogo de servicios y control integral.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
